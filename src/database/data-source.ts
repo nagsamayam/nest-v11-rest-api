@@ -1,4 +1,4 @@
-import { databaseConfig } from 'src/config/database.config';
+import { databaseConfig } from '../config/database.config';
 import { DataSource } from 'typeorm';
 import { buildDataSourceOptions } from './data-source-options';
 

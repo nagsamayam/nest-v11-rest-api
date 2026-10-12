@@ -1,6 +1,6 @@
 import { join } from 'path';
-import { DatabaseSettings } from 'src/config/database.config';
-import { User } from 'src/users/user.entity';
+import { DatabaseSettings } from '../config/database.config';
+import { User } from '../users/user.entity';
 import { DataSourceOptions } from 'typeorm';
 
 export function buildDataSourceOptions(

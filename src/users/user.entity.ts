@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -9,6 +10,7 @@ import {
 @Entity({
   name: 'users',
 })
+@Index('users_email_unique_idx', ['email'], { unique: true })
 export class User {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -30,7 +32,6 @@ export class User {
   @Column({
     type: 'varchar',
     length: 254,
-    unique: true,
   })
   email!: string;
 
@@ -51,8 +52,10 @@ export class User {
     name: 'mobile_number',
     type: 'varchar',
     length: 20,
+    default: null,
+    nullable: true,
   })
-  mobileNumber!: string;
+  mobileNumber!: string | null;
 
   @CreateDateColumn({
     name: 'created_at',
