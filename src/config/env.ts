@@ -2,12 +2,22 @@ import z from 'zod';
 
 const port = z.coerce.number().min(1).max(65535);
 
+export const LOG_LEVELS = [
+  'fatal',
+  'error',
+  'warn',
+  'log',
+  'debug',
+  'verbose',
+] as const;
+
 export const envSchema = z.object({
   APP_NAME: z.string().min(1).default('Nest App'),
   NODE_ENV: z
     .enum(['development', 'staging', 'production'])
     .default('development'),
   APP_PORT: port.default(3000),
+  LOG_LEVEL: z.enum(LOG_LEVELS).default('log'),
 
   MYSQL_DB_HOST: z.string().min(1),
   MYSQL_DB_PORT: port.default(3306),
