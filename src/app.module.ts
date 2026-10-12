@@ -8,6 +8,8 @@ import { databaseConfig } from './config/database.config';
 import { buildDataSourceOptions } from './database/data-source-options';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -21,8 +23,15 @@ import { AuthModule } from './auth/auth.module';
       useFactory: (db: ConfigType<typeof databaseConfig>) =>
         buildDataSourceOptions(db),
     }),
+    EventEmitterModule.forRoot({
+      wildcard: true,
+      delimiter: '.',
+      maxListeners: 10,
+      ignoreErrors: false,
+    }),
     UsersModule,
     AuthModule,
+    NotificationsModule,
   ],
 
   controllers: [AppController],

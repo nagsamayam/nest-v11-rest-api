@@ -1,0 +1,12 @@
+export const USER_EVENTS = {
+  CREATED: 'user.created',
+} as const;
+
+export class UserCreatedEvent {
+  constructor(
+    public readonly userId: number,
+    public readonly email: string,
+    public readonly firstName: string,
+    public readonly lastName: string,
+  ) {}
+}
