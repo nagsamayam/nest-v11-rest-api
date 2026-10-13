@@ -11,6 +11,7 @@ import { toUserResponse, UserResponse } from './user.resource';
 import { PasswordService } from '../auth/password.service';
 import { USER_EVENTS, UserCreatedEvent } from './events/user-created.event';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { MailProducer } from 'src/mail/mail.producer';
 
 @Injectable()
 export class UsersService implements OnApplicationBootstrap {
@@ -19,6 +20,7 @@ export class UsersService implements OnApplicationBootstrap {
     private readonly userRepository: Repository<User>,
     private readonly passwordService: PasswordService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly mail: MailProducer,
   ) {}
 
   onApplicationBootstrap() {
@@ -46,6 +48,15 @@ export class UsersService implements OnApplicationBootstrap {
     try {
       const savedUser = await this.userRepository.save(user);
       this.emitUserCreatedEvent(savedUser);
+
+      // Send registration E-mail
+      this.mail.enqueueWelcome({
+        userId: savedUser.id,
+        email: savedUser.email,
+        firstName: savedUser.firstName,
+        lastName: savedUser.lastName,
+      });
+
       return toUserResponse(savedUser);
     } catch (error) {
       throw error;
